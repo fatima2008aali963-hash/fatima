@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الرئيسية — لوفينج هومز</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <span class="paw">🐾</span>
+    لوفينج هومز
+  </a>
+  <div class="nav-links">
+    <a href="services.html">خدماتنا</a>
+    <a href="packages.html">الحزم</a>
+    <a href="gallery.html">معرض الصور</a>
+      <a href="reviews.html">آراء العملاء</a>
+    <a href="contact.html">تواصل</a>
+          <a href="founder.html">من نحن</a>
+
+  </div>
+  <a href="contact.html" class="nav-btn">احجز الآن</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <div class="hero-tag">🏆 الفندق الأول لحيوانك في هونج كونج</div>
+    <h1>حيث يُقيم<br>حيوانك الأليف<br>بكل <em>راحة</em></h1>
+    <p>فندق لوفينج هومز يوفّر بيئة دافئة وآمنة لحيوانك، مع فريق متخصص يحرص على سعادته طوال اليوم.</p>
+    <div class="hero-btns">
+      <a href="packages.html" class="btn-primary">اعرف الحزم</a>
+      <a href="contact.html" class="btn-ghost">تواصل معنا</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-img">
+      <img src="https://cdn.pixabay.com/photo/2016/02/19/15/46/dog-1210559_1280.jpg" alt="كلب سعيد">
+    </div>
+    <div class="hero-img">
+      <img src="https://cdn.pixabay.com/photo/2017/11/09/21/41/cat-2934720_1280.jpg" alt="قطة جميلة">
+    </div>
+    <div class="hero-img">
+      <img src="https://cdn.pixabay.com/photo/2020/03/31/19/20/dog-4988985_1280.jpg" alt="كلب يلعب">
+    </div>
+    <div class="hero-badge-float">
+      <span class="dot"></span>
+      خدمة بيطرية متاحة 24/7
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat"><div class="num">500+</div><div class="lbl">حيوان أليف رعيناه</div></div>
+  <div class="stat-sep"></div>
+  <div class="stat"><div class="num">24/7</div><div class="lbl">رعاية بيطرية</div></div>
+  <div class="stat-sep"></div>
+  <div class="stat"><div class="num">3</div><div class="lbl">حزم متنوعة</div></div>
+  <div class="stat-sep"></div>
+  <div class="stat"><div class="num">100%</div><div class="lbl">رضا العملاء</div></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLbOutside(event)">
+  <button class="lb-prev" onclick="shiftLb(-1)">&#8249;</button>
+  <div class="lightbox-inner">
+    <button class="lb-close" onclick="closeLb()">✕</button>
+    <img id="lb-img" src="" alt="">
+    <div id="lb-counter"></div>
+  </div>
+  <button class="lb-next" onclick="shiftLb(1)">&#8250;</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-logo">
+      🐾 لوفينج هومز
+      <span>فندق الحيوانات الأليفة – هونج كونج</span>
+    </div>
+    <div class="footer-links">
+      <a href="services.html">الخدمات</a>
+      <a href="packages.html">الحزم</a>
+      <a href="gallery.html">معرض الصور</a>
+     <a href="reviews.html">آراء العملاء</a>
+      <a href="contact.html">تواصل</a>
+    </div>
+  </div>
+
+<script src="images.js"></script>
+<script src="script.js"></script>
+ <script src="accessibility.js"></script>
+ <script src="lang.js"></script>
+</body>
+</html>

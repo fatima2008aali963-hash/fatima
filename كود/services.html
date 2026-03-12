@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خدماتنا — لوفينج هومز</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <span class="paw">🐾</span>
+    لوفينج هومز
+  </a>
+  <div class="nav-links">
+    <a href="services.html">خدماتنا</a>
+    <a href="packages.html">الحزم</a>
+    <a href="gallery.html">معرض الصور</a>
+      <a href="reviews.html">آراء العملاء</a>
+    <a href="contact.html">تواصل</a>
+         <a href="founder.html">من نحن</a>
+
+  </div>
+  <a href="contact.html" class="nav-btn">احجز الآن</a>
+</nav>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="sec-head">
+    <span class="sec-eyebrow">مرافقنا</span>
+    <h2 class="sec-title">كل ما يحتاجه حيوانك</h2>
+    <p class="sec-sub">بيئة متكاملة مصممة لراحة وسعادة حيوانك الأليف</p>
+  </div>
+  <div class="services-grid">
+
+    <div class="svc-card">
+      <div class="svc-img">
+        <img data-src="svcImgs[0]" style="width:100%;height:100%;object-fit:cover;" alt="غرف الإقامة">
+      </div>
+      <div class="svc-body">
+        <div class="svc-icon">🏠</div>
+        <h3>الغرف والإقامة</h3>
+        <ul>
+          <li>صالة للحانة ومنتجع</li>
+          <li>غرف بتلفزيون وتبريد أرضي</li>
+          <li>مراعي خارجية آمنة</li>
+          <li>حظيرة لعب داخلية</li>
+        </ul>
+        <div class="groom-mini">
+          <img data-src="roomMiniSrcs[0]" onclick="openRoom(0)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+          <img data-src="roomMiniSrcs[1]" onclick="openRoom(1)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+          <img data-src="roomMiniSrcs[2]" onclick="openRoom(2)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+          <img data-src="roomMiniSrcs[3]" onclick="openRoom(3)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-img">
+        <img data-src="svcImgs[1]" style="width:100%;height:100%;object-fit:cover;" alt="رعاية صحية">
+      </div>
+      <div class="svc-body">
+        <div class="svc-icon">🏥</div>
+        <h3>الرعاية الصحية</h3>
+        <ul>
+          <li>خدمات بيطرية 24 ساعة</li>
+          <li>مراقبة مستمرة للحيوان</li>
+          <li>تنبيه فوري للمالك</li>
+          <li>متابعة دورية للصحة</li>
+        </ul>
+        <div class="groom-mini">
+          <img data-src="healthMiniSrcs[0]" onclick="openHealth(0)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+          <img data-src="healthMiniSrcs[1]" onclick="openHealth(1)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+          <img data-src="healthMiniSrcs[2]" onclick="openHealth(2)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+          <img data-src="healthMiniSrcs[3]" onclick="openHealth(3)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-img">
+        <img data-src="svcImgs[2]" style="width:100%;height:100%;object-fit:cover;" alt="العناية والتجميل">
+      </div>
+      <div class="svc-body">
+        <div class="svc-icon">✂️</div>
+        <h3>العناية والتجميل</h3>
+        <ul>
+          <li>مساحة عشب خاصة</li>
+          <li>جلسة حلاقة وتنظيف</li>
+          <li>تحديثات وصور يومية</li>
+          <li>مكافآت ومعاملة خاصة</li>
+        </ul>
+        <div class="groom-mini">
+          <img data-src="groomMiniSrcs[0]" onclick="openGroom(0)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+          <img data-src="groomMiniSrcs[1]" onclick="openGroom(1)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+          <img data-src="groomMiniSrcs[2]" onclick="openGroom(2)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+          <img data-src="groomMiniSrcs[3]" onclick="openGroom(3)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-img">
+        <img data-src="svcImgs[3]" style="width:100%;height:100%;object-fit:cover;" alt="التوصيل">
+      </div>
+      <div class="svc-body">
+        <div class="svc-icon">🚗</div>
+        <h3>خدمة التوصيل</h3>
+        <ul>
+          <li>توصيل من وإلى المنزل</li>
+          <li>سيارة مجهّزة ومريحة</li>
+          <li>تتبع مباشر خلال الرحلة</li>
+          <li>تحديثات فورية للمالك</li>
+        </ul>
+        <div class="groom-mini">
+          <img data-src="delMiniSrcs[0]" onclick="openDel(0)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+          <img data-src="delMiniSrcs[1]" onclick="openDel(1)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+          <img data-src="delMiniSrcs[2]" onclick="openDel(2)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+          <img data-src="delMiniSrcs[3]" onclick="openDel(3)" style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLbOutside(event)">
+  <button class="lb-prev" onclick="shiftLb(-1)">&#8249;</button>
+  <div class="lightbox-inner">
+    <button class="lb-close" onclick="closeLb()">✕</button>
+    <img id="lb-img" src="" alt="">
+    <div id="lb-counter"></div>
+  </div>
+  <button class="lb-next" onclick="shiftLb(1)">&#8250;</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-logo">
+      🐾 لوفينج هومز
+      <span>فندق الحيوانات الأليفة – هونج كونج</span>
+    </div>
+    <div class="footer-links">
+      <a href="services.html">الخدمات</a>
+      <a href="packages.html">الحزم</a>
+      <a href="gallery.html">معرض الصور</a>
+      <a href="contact.html">تواصل</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2024 <strong>لوفينج هومز</strong> — جميع الحقوق محفوظة
+  </div>
+</footer>
+
+<script src="images.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

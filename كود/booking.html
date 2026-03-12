@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>احجز الآن — لوفينج هومز</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --amber:#C9873A;--amber-l:#E8A055;--amber-xl:#F5C07A;
+  --bark:#3D2910;--bark-l:#5C3D1A;
+  --sand:#FAF5EE;--cream:#F2E8D9;--cream-d:#E8D9C4;
+  --muted:#9A8070;--border:#DDD0C0;
+  --ok:#2E7D52;--err:#C0392B;--warn:#D4830A;
+  --r:14px;
+  --sh:0 2px 8px rgba(61,41,16,.08);
+  --sh-md:0 8px 28px rgba(61,41,16,.13);
+  --sh-lg:0 20px 56px rgba(61,41,16,.18);
+}
+.skip{position:absolute;top:-60px;right:0;z-index:9999;background:var(--amber);color:#fff;padding:10px 20px;font-weight:800;text-decoration:none;border-radius:0 0 12px 12px;transition:top .2s;}
+.skip:focus{top:0;}
+body{font-family:'Tajawal',sans-serif;background:var(--sand);color:var(--bark);}
+.bk-page{padding-top:80px;min-height:100vh;}
+.bk-hero{background:var(--bark);padding:52px 48px 66px;position:relative;overflow:hidden;}
+.bk-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 10% 50%,rgba(201,135,58,.22) 0%,transparent 65%);pointer-events:none;}
+.hero-paw{position:absolute;left:-20px;bottom:-40px;font-size:260px;opacity:.05;line-height:1;pointer-events:none;user-select:none;}
+.hero-inner{position:relative;z-index:1;max-width:620px;}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(201,135,58,.15);border:1px solid rgba(201,135,58,.3);color:var(--amber-xl);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:30px;margin-bottom:16px;}
+.hero-h{font-size:40px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:10px;}
+.hero-h em{color:var(--amber-xl);font-style:normal;}
+.hero-p{font-size:14px;color:rgba(255,255,255,.45);line-height:1.75;}
+.steps-bar{display:flex;align-items:center;background:rgba(255,255,255,.05);border-top:1px solid rgba(255,255,255,.08);padding:12px 40px;position:relative;z-index:1;overflow-x:auto;gap:0;}
+.si{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.si-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:2px solid rgba(255,255,255,.18);color:rgba(255,255,255,.3);transition:all .3s;flex-shrink:0;}
+.si.cur .si-num{background:var(--amber);border-color:var(--amber);color:#fff;box-shadow:0 0 0 3px rgba(201,135,58,.2);}
+.si.done .si-num{background:var(--ok);border-color:var(--ok);color:#fff;}
+.si-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,.28);white-space:nowrap;transition:color .3s;}
+.si.cur .si-lbl{color:rgba(255,255,255,.85);}
+.si.done .si-lbl{color:rgba(46,125,82,.85);}
+.sl{flex:1;min-width:16px;height:1px;background:rgba(255,255,255,.1);margin:0 6px;}
+.sl.done{background:rgba(46,125,82,.45);}
+.prog-track{height:3px;background:rgba(255,255,255,.08);}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--amber-l));transition:width .5s ease;width:14.28%;}
+.bk-grid{display:grid;grid-template-columns:300px 1fr;max-width:1140px;margin:0 auto;padding:0 0 80px;}
+.bk-side{padding:28px 22px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:22px;position:sticky;top:80px;height:calc(100vh - 80px);overflow-y:auto;}
+.side-lbl{font-size:10px;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;}
+.pkg-list{display:flex;flex-direction:column;gap:7px;}
+.pkg-card{position:relative;border:2px solid var(--border);border-radius:var(--r);padding:12px 14px 12px 42px;cursor:pointer;background:#fff;transition:all .22s;}
+.pkg-card:hover{border-color:var(--amber-l);box-shadow:var(--sh);}
+.pkg-card.sel{border-color:var(--amber);background:#FFFAF3;box-shadow:0 0 0 3px rgba(201,135,58,.1);}
+.pkg-card::before{content:'';position:absolute;top:50%;right:13px;transform:translateY(-50%);width:17px;height:17px;border-radius:50%;border:2px solid var(--border);background:#fff;transition:all .2s;}
+.pkg-card.sel::before{background:var(--amber);border-color:var(--amber);}
+.pkg-card.sel::after{content:'✓';position:absolute;top:50%;right:13px;transform:translateY(-50%);font-size:9px;color:#fff;font-weight:900;z-index:1;width:17px;text-align:center;}
+.pkg-hot{position:absolute;top:-8px;left:10px;background:linear-gradient(135deg,var(--amber),var(--amber-l));color:#fff;font-size:9px;font-weight:900;padding:2px 7px;border-radius:7px;}
+.pkg-name{font-size:13px;font-weight:900;color:var(--bark);margin-bottom:2px;}
+.pkg-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+.pkg-pr{font-size:14px;font-weight:900;color:var(--amber);margin-top:5px;}
+.pkg-pr small{font-size:10px;font-weight:500;color:var(--muted);}
+.sum-card{background:var(--bark);border-radius:var(--r);padding:16px 18px;}
+.sum-head{font-size:10px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:12px;}
+.sum-row{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.4);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+.sum-row:last-child{border:none;}
+.sum-row span{color:rgba(255,255,255,.75);font-weight:700;}
+.sum-total{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.15);display:flex;justify-content:space-between;align-items:baseline;}
+.sum-total-l{font-size:12px;color:rgba(255,255,255,.5);font-weight:700;}
+.sum-total-v{font-size:24px;font-weight:900;color:var(--amber-xl);}
+.sum-total-v small{font-size:11px;color:rgba(255,255,255,.35);font-weight:500;}
+.trust-list{display:flex;flex-direction:column;gap:7px;}
+.tr{display:flex;align-items:center;gap:8px;}
+.tr-ic{width:28px;height:28px;border-radius:8px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.tr-t{font-size:11px;color:var(--muted);line-height:1.4;}
+.bk-form{padding:36px 42px;}
+.fsec{display:none;animation:fadeUp .35s ease;}
+.fsec.on{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.fsec-em{font-size:36px;display:block;margin-bottom:8px;}
+.fsec-h{font-size:24px;font-weight:900;color:var(--bark);margin-bottom:5px;}
+.fsec-s{font-size:13px;color:var(--muted);margin-bottom:26px;line-height:1.7;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:10px;font-weight:800;letter-spacing:.8px;color:var(--muted);text-transform:uppercase;margin-bottom:7px;transition:color .2s;}
+.req{color:var(--amber);}
+.fg input,.fg select,.fg textarea{width:100%;padding:13px 15px;background:#fff;border:2px solid var(--border);border-radius:11px;font-family:'Tajawal',sans-serif;font-size:14px;color:var(--bark);outline:none;direction:rtl;transition:all .22s;-webkit-appearance:none;box-shadow:var(--sh);}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--amber);box-shadow:0 0 0 4px rgba(201,135,58,.1);}
+.fg input.err{border-color:var(--err);background:#FFF5F5;animation:shk .3s;}
+@keyframes shk{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+.fg textarea{height:88px;resize:none;}
+.ferr{font-size:11px;color:var(--err);margin-top:4px;display:none;}
+.ferr.on{display:block;}
+.fhint{font-size:11px;color:var(--muted);margin-top:4px;}
+.pet-pills{display:flex;gap:7px;flex-wrap:wrap;}
+.pet-pill{padding:9px 15px;border-radius:26px;border:2px solid var(--border);background:#fff;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s;box-shadow:var(--sh);}
+.pet-pill:hover{border-color:var(--amber-l);color:var(--bark);}
+.pet-pill.on{background:var(--bark);border-color:var(--bark);color:#fff;box-shadow:0 4px 12px rgba(61,41,16,.2);}
+.pkg-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.pp-card{position:relative;border:2px solid var(--border);border-radius:var(--r);padding:18px 14px 14px;cursor:pointer;background:#fff;transition:all .22s;text-align:center;}
+.pp-card:hover{border-color:var(--amber-l);transform:translateY(-2px);box-shadow:var(--sh-md);}
+.pp-card.sel{border-color:var(--amber);background:#FFFAF3;box-shadow:0 0 0 4px rgba(201,135,58,.1);}
+.pp-card::before{content:'';position:absolute;top:10px;left:10px;width:17px;height:17px;border-radius:50%;border:2px solid var(--border);background:#fff;transition:all .2s;}
+.pp-card.sel::before{background:var(--amber);border-color:var(--amber);}
+.pp-card.sel::after{content:'✓';position:absolute;top:10px;left:10px;font-size:9px;color:#fff;font-weight:900;z-index:1;width:17px;text-align:center;}
+.pp-hot{position:absolute;top:-9px;right:50%;transform:translateX(50%);background:linear-gradient(135deg,var(--amber),var(--amber-l));color:#fff;font-size:9px;font-weight:900;padding:2px 8px;border-radius:8px;white-space:nowrap;}
+.pp-em{font-size:28px;display:block;margin-bottom:7px;}
+.pp-name{font-size:14px;font-weight:900;color:var(--bark);margin-bottom:4px;}
+.pp-feat{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:8px;}
+.pp-pr{font-size:16px;font-weight:900;color:var(--amber);}
+.pp-pr small{font-size:11px;font-weight:500;color:var(--muted);}
+.extras{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.ex{border:2px solid var(--border);border-radius:var(--r);padding:13px;cursor:pointer;transition:all .2s;background:#fff;display:flex;gap:11px;box-shadow:var(--sh);}
+.ex:hover{border-color:var(--amber-l);transform:translateY(-1px);box-shadow:var(--sh-md);}
+.ex.on{border-color:var(--amber);background:#FFFAF3;}
+.ex-cb{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;transition:all .2s;}
+.ex.on .ex-cb{background:var(--amber);border-color:var(--amber);color:#fff;}
+.ex-name{font-size:13px;font-weight:800;color:var(--bark);margin-bottom:2px;}
+.ex-desc{font-size:11px;color:var(--muted);}
+.ex-pr{font-size:12px;font-weight:900;color:var(--amber);margin-top:3px;}
+.date-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.nights-badge{display:none;margin-top:10px;background:var(--bark);color:#fff;border-radius:26px;padding:8px 18px;font-size:13px;font-weight:800;text-align:center;box-shadow:0 4px 14px rgba(61,41,16,.2);}
+.nights-badge.on{display:block;animation:pop .3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:scale(1);}}
+.nights-badge span{color:var(--amber-xl);}
+.notifs{display:flex;flex-direction:column;gap:8px;}
+.notif-row{display:flex;justify-content:space-between;align-items:center;background:#fff;border:2px solid var(--border);border-radius:12px;padding:13px 16px;box-shadow:var(--sh);transition:border-color .2s;}
+.notif-row:hover{border-color:var(--cream-d);}
+.nr-t{font-size:13px;font-weight:800;color:var(--bark);margin-bottom:2px;}
+.nr-d{font-size:11px;color:var(--muted);}
+.tog{position:relative;width:44px;height:24px;flex-shrink:0;}
+.tog input{opacity:0;width:0;height:0;position:absolute;}
+.tog-sl{position:absolute;inset:0;background:#D5C8BC;border-radius:24px;cursor:pointer;transition:background .3s;}
+.tog-sl::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:3px;right:3px;transition:transform .3s;box-shadow:0 1px 4px rgba(0,0,0,.18);}
+.tog input:checked+.tog-sl{background:var(--amber);}
+.tog input:checked+.tog-sl::after{transform:translateX(-20px);}
+.priv-box{background:var(--cream);border-radius:12px;padding:14px 16px;font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:14px;border-right:3px solid var(--amber);}
+.priv-box strong{color:var(--bark);}
+.priv-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.priv-row input[type=checkbox]{width:17px;height:17px;margin-top:2px;accent-color:var(--amber);cursor:pointer;flex-shrink:0;}
+.priv-row label{font-size:13px;color:var(--muted);cursor:pointer;line-height:1.6;}
+.priv-row label a{color:var(--amber);font-weight:700;text-decoration:none;}
+.rev-card{background:#fff;border:2px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-md);margin-bottom:18px;}
+.rev-head{background:var(--bark);padding:13px 20px;display:flex;justify-content:space-between;align-items:center;}
+.rev-head-t{font-size:13px;font-weight:800;color:rgba(255,255,255,.6);}
+.rev-head-ref{font-size:12px;color:var(--amber-xl);font-weight:800;}
+.rev-body{padding:0 20px;}
+.rev-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--cream-d);}
+.rev-row:last-child{border:none;}
+.rl{font-size:12px;color:var(--muted);}
+.rv{font-size:13px;font-weight:800;color:var(--bark);}
+.fnav{display:flex;gap:10px;margin-top:28px;}
+.btn-back{padding:13px 22px;border-radius:11px;border:2px solid var(--border);background:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s;box-shadow:var(--sh);flex-shrink:0;}
+.btn-back:hover{border-color:var(--amber);color:var(--bark);}
+.btn-next{flex:1;padding:14px;background:var(--bark);color:#fff;border:none;border-radius:11px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:800;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 6px 20px rgba(61,41,16,.22);transition:all .22s;}
+.btn-next::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--amber),var(--amber-l));opacity:0;transition:opacity .3s;}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(61,41,16,.3);}
+.btn-next:hover::after{opacity:1;}
+.btn-next .nt{position:relative;z-index:1;}
+.btn-next.ld .nt{opacity:0;}
+.btn-next.ld::before{content:'';position:absolute;inset:0;margin:auto;z-index:1;width:22px;height:22px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.suc{display:none;text-align:center;padding:60px 20px;animation:sucPop .6s cubic-bezier(.34,1.56,.64,1);}
+@keyframes sucPop{from{opacity:0;transform:scale(.8);}to{opacity:1;transform:scale(1);}}
+.suc-em{font-size:72px;display:block;margin-bottom:14px;animation:float 2s ease-in-out infinite alternate;}
+@keyframes float{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+.suc-h{font-size:28px;font-weight:900;color:var(--bark);margin-bottom:8px;}
+.suc-p{font-size:14px;color:var(--muted);line-height:1.8;max-width:380px;margin:0 auto 24px;}
+.ref-pill{display:inline-flex;flex-direction:column;align-items:center;background:var(--bark);border-radius:18px;padding:18px 40px;margin-bottom:24px;box-shadow:0 12px 32px rgba(61,41,16,.22);}
+.ref-l{font-size:10px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,.35);text-transform:uppercase;}
+.ref-n{font-size:22px;font-weight:900;letter-spacing:4px;color:var(--amber-xl);margin-top:4px;}
+.ref-copy{background:none;border:none;font-family:'Tajawal',sans-serif;font-size:12px;color:rgba(255,255,255,.4);cursor:pointer;margin-top:6px;transition:color .2s;}
+.ref-copy:hover{color:var(--amber-xl);}
+.suc-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.sb{padding:13px 24px;border-radius:11px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;border:none;}
+.sb.p{background:linear-gradient(135deg,var(--amber),var(--amber-l));color:#fff;box-shadow:0 5px 16px rgba(201,135,58,.3);}
+.sb.p:hover{transform:translateY(-2px);}
+.sb.g{background:#fff;color:var(--bark);border:2px solid var(--border);}
+.sb.g:hover{border-color:var(--amber);color:var(--amber);}
+#toasts{position:fixed;bottom:22px;left:22px;z-index:99999;display:flex;flex-direction:column;gap:8px;}
+.toast{background:var(--bark);color:#fff;padding:12px 16px;border-radius:13px;font-size:13px;font-weight:700;min-width:230px;max-width:300px;box-shadow:0 8px 28px rgba(0,0,0,.2);display:flex;align-items:center;gap:9px;animation:tIn .3s cubic-bezier(.22,1,.36,1);border-right:4px solid var(--amber);}
+.toast.s{border-color:var(--ok);}.toast.e{border-color:var(--err);}.toast.w{border-color:var(--warn);}
+.toast.out{animation:tOut .3s ease forwards;}
+@keyframes tIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes tOut{to{opacity:0;transform:translateY(8px);}}
+@media(max-width:960px){
+  .bk-hero{padding:32px 20px 48px;}.hero-h{font-size:26px;}
+  .steps-bar{padding:10px 16px;}.si-lbl{display:none;}
+  .bk-grid{grid-template-columns:1fr;}
+  .bk-side{position:static;height:auto;border:none;border-bottom:1px solid var(--border);padding:20px;}
+  .pkg-list{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+  .bk-form{padding:22px 18px;}
+  .frow,.extras,.date-grid,.pkg-picker{grid-template-columns:1fr;}
+}
+@media(max-width:520px){
+  .pkg-list{grid-template-columns:1fr;}.extras{grid-template-columns:1fr;}
+  .suc-btns{flex-direction:column;align-items:center;}
+}
+</style>
+</head>
+<body>
+
+<a href="#bk-main" class="skip">تخطى إلى نموذج الحجز</a>
+<div id="toasts" aria-live="polite"></div>
+
+<nav>
+  <a class="nav-logo" href="index.html"><span class="paw">🐾</span> لوفينج هومز</a>
+  <div class="nav-links">
+    <a href="services.html">خدماتنا</a>
+    <a href="packages.html">الحزم</a>
+    <a href="gallery.html">معرض الصور</a>
+    <a href="reviews.html">آراء العملاء</a>
+    <a href="contact.html">تواصل</a>
+    <a href="booking.html" aria-current="page">الحجز</a>
+  </div>
+  <a href="booking.html" class="nav-btn">احجز الآن</a>
+</nav>
+
+<div class="bk-page">
+<div class="bk-hero" role="banner">
+  <span class="hero-paw" aria-hidden="true">🐾</span>
+  <div class="hero-inner">
+    <div class="hero-badge">🐾 نظام الحجز</div>
+    <h1 class="hero-h">احجز إقامة <em>مثالية</em><br>لصديقك الصغير</h1>
+    <p class="hero-p">سبع خطوات بسيطة · تأكيد فوري · رعاية لا مثيل لها في هونج كونج</p>
+  </div>
+</div>
+
+<div class="steps-bar" role="navigation" aria-label="خطوات الحجز" id="steps-bar">
+  <div class="si cur" id="si1"><div class="si-num">1</div><span class="si-lbl">بياناتك</span></div>
+  <div class="sl" id="sl1"></div>
+  <div class="si" id="si2"><div class="si-num">2</div><span class="si-lbl">حيوانك</span></div>
+  <div class="sl" id="sl2"></div>
+  <div class="si" id="si3"><div class="si-num">3</div><span class="si-lbl">الحزمة</span></div>
+  <div class="sl" id="sl3"></div>
+  <div class="si" id="si4"><div class="si-num">4</div><span class="si-lbl">الخدمات</span></div>
+  <div class="sl" id="sl4"></div>
+  <div class="si" id="si5"><div class="si-num">5</div><span class="si-lbl">التواريخ</span></div>
+  <div class="sl" id="sl5"></div>
+  <div class="si" id="si6"><div class="si-num">6</div><span class="si-lbl">التنبيهات</span></div>
+  <div class="sl" id="sl6"></div>
+  <div class="si" id="si7"><div class="si-num">7</div><span class="si-lbl">تأكيد</span></div>
+</div>
+<div class="prog-track" role="progressbar" aria-valuenow="14" aria-valuemin="0" aria-valuemax="100" aria-label="تقدم الحجز">
+  <div class="prog-fill" id="prog-fill"></div>
+</div>
+
+<div class="bk-grid">
+<aside class="bk-side" aria-label="ملخص الحجز">
+  <div>
+    <div class="side-lbl">الحزمة المختارة</div>
+    <div class="pkg-list" role="radiogroup" aria-label="نوع الحزمة">
+      <div class="pkg-card sel" tabindex="0" role="radio" aria-checked="true" data-pkg="الأساسية" data-price="180" onclick="selPkg(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selPkg(this)}">
+        <div class="pkg-name">🌿 الأساسية</div>
+        <div class="pkg-desc">إقامة مريحة · وجبات يومية</div>
+        <div class="pkg-pr">HKD 180 <small>/ليلة</small></div>
+      </div>
+      <div class="pkg-card" tabindex="0" role="radio" aria-checked="false" data-pkg="المميزة" data-price="320" onclick="selPkg(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selPkg(this)}">
+        <div class="pkg-hot">⭐ الأشهر</div>
+        <div class="pkg-name">✨ المميزة</div>
+        <div class="pkg-desc">غرفة خاصة · تزيين · ألعاب</div>
+        <div class="pkg-pr">HKD 320 <small>/ليلة</small></div>
+      </div>
+      <div class="pkg-card" tabindex="0" role="radio" aria-checked="false" data-pkg="الملكية" data-price="580" onclick="selPkg(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selPkg(this)}">
+        <div class="pkg-name">👑 الملكية</div>
+        <div class="pkg-desc">جناح VIP · خدمة 24/7</div>
+        <div class="pkg-pr">HKD 580 <small>/ليلة</small></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="side-lbl">ملخص الحساب</div>
+    <div class="sum-card" aria-live="polite">
+      <div class="sum-head">تفاصيل السعر</div>
+      <div class="sum-row"><span>الحزمة</span><span id="s-pkg">الأساسية</span></div>
+      <div class="sum-row"><span>سعر الليلة</span><span id="s-pn">HKD 180</span></div>
+      <div class="sum-row"><span>عدد الليالي</span><span id="s-ni">—</span></div>
+      <div class="sum-row"><span>خدمات إضافية</span><span id="s-ex">—</span></div>
+      <div class="sum-row"><span>التوصيل</span><span id="s-dl">مجاني</span></div>
+      <div class="sum-total">
+        <span class="sum-total-l">المجموع</span>
+        <span class="sum-total-v"><span id="s-tt">—</span> <small>HKD</small></span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="side-lbl">ضماناتنا</div>
+    <div class="trust-list">
+      <div class="tr"><div class="tr-ic">🔒</div><div class="tr-t">بياناتك محمية ومشفرة</div></div>
+      <div class="tr"><div class="tr-ic">✅</div><div class="tr-t">إلغاء مجاني قبل 48 ساعة</div></div>
+      <div class="tr"><div class="tr-ic">📸</div><div class="tr-t">تقارير يومية على واتساب</div></div>
+      <div class="tr"><div class="tr-ic">🏥</div><div class="tr-t">رعاية بيطرية 24/7</div></div>
+      <div class="tr"><div class="tr-ic">💳</div><div class="tr-t">الدفع عند الوصول</div></div>
+    </div>
+  </div>
+</aside>
+
+<main class="bk-form" id="bk-main" aria-label="نموذج الحجز">
+
+<!-- STEP 1 -->
+<section class="fsec on" id="fs1" aria-labelledby="fh1">
+  <span class="fsec-em" aria-hidden="true">👤</span>
+  <h2 class="fsec-h" id="fh1">بياناتك الشخصية</h2>
+  <p class="fsec-s">معلوماتك الأساسية للتواصل وتأكيد الحجز — محمية بالكامل 🔒</p>
+  <div class="frow">
+    <div class="fg"><label for="b-fn">الاسم الأول <span class="req">*</span></label><input type="text" id="b-fn" autocomplete="given-name" placeholder="أحمد" aria-required="true"><div class="ferr" id="e-fn" role="alert"></div></div>
+    <div class="fg"><label for="b-ln">اسم العائلة <span class="req">*</span></label><input type="text" id="b-ln" autocomplete="family-name" placeholder="محمد" aria-required="true"><div class="ferr" id="e-ln" role="alert"></div></div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label for="b-em">البريد الإلكتروني <span class="req">*</span></label><input type="email" id="b-em" autocomplete="email" placeholder="example@email.com" inputmode="email" aria-required="true"><div class="ferr" id="e-em" role="alert"></div></div>
+    <div class="fg"><label for="b-ph">رقم الهاتف <span class="req">*</span></label><input type="tel" id="b-ph" autocomplete="tel" placeholder="+852 xxxx xxxx" inputmode="tel" aria-required="true"><div class="ferr" id="e-ph" role="alert"></div></div>
+  </div>
+  <div class="fnav"><button class="btn-next" onclick="nxt(1)"><span class="nt">التالي ← (٢/٧)</span></button></div>
+</section>
+
+<!-- STEP 2 -->
+<section class="fsec" id="fs2" aria-labelledby="fh2">
+  <span class="fsec-em" aria-hidden="true">🐾</span>
+  <h2 class="fsec-h" id="fh2">معلومات حيوانك</h2>
+  <p class="fsec-s">أخبرنا عن صديقك حتى نقدم له أفضل رعاية ممكنة</p>
+  <div class="fg">
+    <label>نوع الحيوان <span class="req">*</span></label>
+    <div class="pet-pills" role="group" aria-label="نوع الحيوان">
+      <button class="pet-pill on" type="button" onclick="selPet(this)" aria-pressed="true">🐕 كلب</button>
+      <button class="pet-pill" type="button" onclick="selPet(this)" aria-pressed="false">🐱 قطة</button>
+      <button class="pet-pill" type="button" onclick="selPet(this)" aria-pressed="false">🐰 أرنب</button>
+      <button class="pet-pill" type="button" onclick="selPet(this)" aria-pressed="false">🐦 طائر</button>
+      <button class="pet-pill" type="button" onclick="selPet(this)" aria-pressed="false">🐹 همستر</button>
+      <button class="pet-pill" type="button" onclick="selPet(this)" aria-pressed="false">🦎 آخر</button>
+    </div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label for="b-pn">اسم الحيوان <span class="req">*</span></label><input type="text" id="b-pn" placeholder="مثال: ماكس" aria-required="true"><div class="ferr" id="e-pn" role="alert"></div></div>
+    <div class="fg"><label for="b-br">السلالة / الفصيلة</label><input type="text" id="b-br" placeholder="مثال: هاسكي"></div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label for="b-ag">العمر (سنوات)</label><input type="number" id="b-ag" min="0" max="30" placeholder="3"></div>
+    <div class="fg"><label for="b-wt">الوزن (كغ)</label><input type="number" id="b-wt" min="0" max="100" step="0.1" placeholder="5.5"></div>
+  </div>
+  <div class="fg"><label for="b-ht">ملاحظات صحية</label><textarea id="b-ht" placeholder="أدوية، حساسيات، أو أي حالات خاصة..."></textarea><div class="fhint">🔒 سرية تامة — لرعاية حيوانك فقط</div></div>
+  <div class="fnav"><button class="btn-back" onclick="bck(2)">→ رجوع</button><button class="btn-next" onclick="nxt(2)"><span class="nt">التالي ← (٣/٧)</span></button></div>
+</section>
+
+<!-- STEP 3 -->
+<section class="fsec" id="fs3" aria-labelledby="fh3">
+  <span class="fsec-em" aria-hidden="true">🏡</span>
+  <h2 class="fsec-h" id="fh3">اختر نوع الحزمة</h2>
+  <p class="fsec-s">اختر الحزمة المناسبة لحيوانك — يمكنك التغيير في أي وقت</p>
+  <div class="pkg-picker" role="radiogroup" aria-label="نوع الحزمة">
+    <div class="pp-card sel" tabindex="0" role="radio" aria-checked="true" data-pkg="الأساسية" data-price="180" onclick="selPkgF(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selPkgF(this)}">
+      <span class="pp-em">🌿</span><div class="pp-name">الأساسية</div><div class="pp-feat">إقامة مريحة<br>وجبات يومية<br>متابعة أساسية</div><div class="pp-pr">180 <small>HKD/ليلة</small></div>
+    </div>
+    <div class="pp-card" tabindex="0" role="radio" aria-checked="false" data-pkg="المميزة" data-price="320" onclick="selPkgF(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selPkgF(this)}">
+      <div class="pp-hot">⭐ الأشهر</div><span class="pp-em">✨</span><div class="pp-name">المميزة</div><div class="pp-feat">غرفة خاصة<br>تزيين + ألعاب<br>تقارير يومية</div><div class="pp-pr">320 <small>HKD/ليلة</small></div>
+    </div>
+    <div class="pp-card" tabindex="0" role="radio" aria-checked="false" data-pkg="الملكية" data-price="580" onclick="selPkgF(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selPkgF(this)}">
+      <span class="pp-em">👑</span><div class="pp-name">الملكية</div><div class="pp-feat">جناح VIP<br>خدمة 24/7<br>تصوير احترافي</div><div class="pp-pr">580 <small>HKD/ليلة</small></div>
+    </div>
+  </div>
+  <div class="fnav"><button class="btn-back" onclick="bck(3)">→ رجوع</button><button class="btn-next" onclick="nxt(3)"><span class="nt">التالي ← (٤/٧)</span></button></div>
+</section>
+
+<!-- STEP 4 -->
+<section class="fsec" id="fs4" aria-labelledby="fh4">
+  <span class="fsec-em" aria-hidden="true">⭐</span>
+  <h2 class="fsec-h" id="fh4">الخدمات الإضافية</h2>
+  <p class="fsec-s">أضف خدمات خاصة تجعل إقامة حيوانك أكثر راحة وسعادة</p>
+  <div class="extras" role="group" aria-label="الخدمات الإضافية">
+    <div class="ex" tabindex="0" role="checkbox" aria-checked="false" data-price="80" onclick="togEx(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togEx(this)}"><div class="ex-cb" aria-hidden="true">✓</div><div><div class="ex-name">✂️ تزيين وحلاقة</div><div class="ex-desc">حمام + حلاقة احترافية</div><div class="ex-pr">+HKD 80</div></div></div>
+    <div class="ex" tabindex="0" role="checkbox" aria-checked="false" data-price="60" onclick="togEx(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togEx(this)}"><div class="ex-cb" aria-hidden="true">✓</div><div><div class="ex-name">📸 صور يومية</div><div class="ex-desc">تقرير صوري على واتساب</div><div class="ex-pr">+HKD 60</div></div></div>
+    <div class="ex" tabindex="0" role="checkbox" aria-checked="false" data-price="120" onclick="togEx(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togEx(this)}"><div class="ex-cb" aria-hidden="true">✓</div><div><div class="ex-name">🏥 فحص بيطري</div><div class="ex-desc">فحص شامل عند الوصول</div><div class="ex-pr">+HKD 120</div></div></div>
+    <div class="ex" tabindex="0" role="checkbox" aria-checked="false" data-price="40" onclick="togEx(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togEx(this)}"><div class="ex-cb" aria-hidden="true">✓</div><div><div class="ex-name">🎮 وقت لعب إضافي</div><div class="ex-desc">ساعة لعب يومياً</div><div class="ex-pr">+HKD 40</div></div></div>
+    <div class="ex" tabindex="0" role="checkbox" aria-checked="false" data-price="90" onclick="togEx(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togEx(this)}"><div class="ex-cb" aria-hidden="true">✓</div><div><div class="ex-name">🛁 حمام فاخر</div><div class="ex-desc">شامبو فاخر + عطر</div><div class="ex-pr">+HKD 90</div></div></div>
+    <div class="ex" tabindex="0" role="checkbox" aria-checked="false" data-price="50" onclick="togEx(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togEx(this)}"><div class="ex-cb" aria-hidden="true">✓</div><div><div class="ex-name">🎀 طوق مميز</div><div class="ex-desc">هدية تذكارية من لوفينج هومز</div><div class="ex-pr">+HKD 50</div></div></div>
+  </div>
+  <div class="fnav"><button class="btn-back" onclick="bck(4)">→ رجوع</button><button class="btn-next" onclick="nxt(4)"><span class="nt">التالي ← (٥/٧)</span></button></div>
+</section>
+
+<!-- STEP 5 -->
+<section class="fsec" id="fs5" aria-labelledby="fh5">
+  <span class="fsec-em" aria-hidden="true">📅</span>
+  <h2 class="fsec-h" id="fh5">مواعيد الإقامة</h2>
+  <p class="fsec-s">حدد تاريخ الدخول والخروج وسيُحسب المبلغ تلقائياً</p>
+  <div class="fg">
+    <label>مدة الإقامة <span class="req">*</span></label>
+    <div class="date-grid">
+      <div class="fg" style="margin:0"><label for="b-ci" style="font-size:10px;margin-bottom:6px;">📅 تاريخ الدخول</label><input type="date" id="b-ci" aria-required="true" onchange="calcN()"><div class="ferr" id="e-ci" role="alert"></div></div>
+      <div class="fg" style="margin:0"><label for="b-co" style="font-size:10px;margin-bottom:6px;">📅 تاريخ الخروج</label><input type="date" id="b-co" aria-required="true" onchange="calcN()"><div class="ferr" id="e-co" role="alert"></div></div>
+    </div>
+    <div class="nights-badge" id="nbadge" aria-live="polite">🌙 <span id="nnum">0</span> ليالي &nbsp;·&nbsp; HKD <span id="ncost">0</span></div>
+  </div>
+  <div class="fg"><label for="b-dl">🚗 خدمة التوصيل</label><select id="b-dl" onchange="calcN()"><option value="0">سأحضر بنفسي (مجاني)</option><option value="80">توصيل من البيت (+HKD 80)</option><option value="150">توصيل وإعادة (+HKD 150)</option></select></div>
+  <div class="fnav"><button class="btn-back" onclick="bck(5)">→ رجوع</button><button class="btn-next" onclick="nxt(5)"><span class="nt">التالي ← (٦/٧)</span></button></div>
+</section>
+
+<!-- STEP 6 -->
+<section class="fsec" id="fs6" aria-labelledby="fh6">
+  <span class="fsec-em" aria-hidden="true">🔔</span>
+  <h2 class="fsec-h" id="fh6">رسائل التنبيه</h2>
+  <p class="fsec-s">اختر كيف تريد أن نبقيك على اطلاع دائم بأخبار حيوانك</p>
+  <div class="notifs" role="group" aria-label="تفضيلات التنبيهات">
+    <div class="notif-row"><div><div class="nr-t">📱 تأكيد الحجز</div><div class="nr-d">رسالة فورية عند تأكيد الحجز</div></div><label class="tog" aria-label="تأكيد الحجز"><input type="checkbox" id="n1" checked><span class="tog-sl"></span></label></div>
+    <div class="notif-row"><div><div class="nr-t">🌅 تحديث يومي</div><div class="nr-d">أخبار وصور حيوانك كل يوم</div></div><label class="tog" aria-label="تحديث يومي"><input type="checkbox" id="n2" checked><span class="tog-sl"></span></label></div>
+    <div class="notif-row"><div><div class="nr-t">⏰ تذكير الموعد</div><div class="nr-d">تذكير قبل يوم من الدخول</div></div><label class="tog" aria-label="تذكير الموعد"><input type="checkbox" id="n3" checked><span class="tog-sl"></span></label></div>
+    <div class="notif-row"><div><div class="nr-t">🏥 تنبيه طبي</div><div class="nr-d">إشعار فوري عند أي ملاحظة صحية</div></div><label class="tog" aria-label="تنبيه طبي"><input type="checkbox" id="n4" checked><span class="tog-sl"></span></label></div>
+    <div class="notif-row"><div><div class="nr-t">🎁 عروض وخصومات</div><div class="nr-d">آخر العروض الخاصة (اختياري)</div></div><label class="tog" aria-label="عروض وخصومات"><input type="checkbox" id="n5"><span class="tog-sl"></span></label></div>
+  </div>
+  <div class="fnav"><button class="btn-back" onclick="bck(6)">→ رجوع</button><button class="btn-next" onclick="nxt(6)"><span class="nt">مراجعة الحجز ← (٧/٧)</span></button></div>
+</section>
+
+<!-- STEP 7 -->
+<section class="fsec" id="fs7" aria-labelledby="fh7">
+  <span class="fsec-em" aria-hidden="true">✅</span>
+  <h2 class="fsec-h" id="fh7">مراجعة وتأكيد</h2>
+  <p class="fsec-s">راجع جميع بياناتك بعناية قبل إتمام الحجز</p>
+  <div class="rev-card" role="region" aria-label="ملخص الحجز">
+    <div class="rev-head"><span class="rev-head-t">ملخص الحجز الكامل</span><span class="rev-head-ref" id="r-ref">—</span></div>
+    <div class="rev-body">
+      <div class="rev-row"><span class="rl">الاسم</span><span class="rv" id="r-nm">—</span></div>
+      <div class="rev-row"><span class="rl">البريد الإلكتروني</span><span class="rv" id="r-em">—</span></div>
+      <div class="rev-row"><span class="rl">رقم الهاتف</span><span class="rv" id="r-ph">—</span></div>
+      <div class="rev-row"><span class="rl">الحيوان</span><span class="rv" id="r-pt">—</span></div>
+      <div class="rev-row"><span class="rl">الحزمة</span><span class="rv" id="r-pk">—</span></div>
+      <div class="rev-row"><span class="rl">الخدمات الإضافية</span><span class="rv" id="r-ex">—</span></div>
+      <div class="rev-row"><span class="rl">تاريخ الدخول</span><span class="rv" id="r-ci">—</span></div>
+      <div class="rev-row"><span class="rl">تاريخ الخروج</span><span class="rv" id="r-co">—</span></div>
+      <div class="rev-row"><span class="rl">عدد الليالي</span><span class="rv" id="r-ni">—</span></div>
+      <div class="rev-row"><span class="rl">التوصيل</span><span class="rv" id="r-dl">—</span></div>
+      <div class="rev-row"><span class="rl">المبلغ الكلي</span><span class="rv" id="r-tt" style="color:var(--amber);font-size:16px;font-weight:900;">—</span></div>
+    </div>
+  </div>
+  <div class="priv-box" role="note">🔒 <strong>حماية بياناتك الشخصية:</strong> جميع المعلومات مشفرة ومحفوظة بأمان تام. لا تُشارك مع أي طرف ثالث وتُستخدم حصراً لأغراض الحجز والتواصل معك.</div>
+  <div class="priv-row"><input type="checkbox" id="con1" aria-required="true"><label for="con1">أوافق على <a href="#">شروط الخدمة</a> و<a href="#">سياسة الخصوصية</a> <span style="color:var(--amber)">*</span></label></div>
+  <div class="priv-row"><input type="checkbox" id="con2"><label for="con2">أوافق على استلام عروض وأخبار من لوفينج هومز (اختياري)</label></div>
+  <div class="fnav"><button class="btn-back" onclick="bck(7)">→ رجوع</button><button class="btn-next" id="fin-btn" onclick="submitBk()"><span class="nt">🎉 تأكيد الحجز النهائي</span></button></div>
+</section>
+
+<!-- SUCCESS -->
+<div class="suc" id="suc" aria-live="assertive">
+  <span class="suc-em">🎉</span>
+  <div class="suc-h">تم تأكيد حجزك!</div>
+  <div class="suc-p">شكراً لثقتك بلوفينج هومز 🐾<br>سنتواصل معك قريباً لتأكيد التفاصيل الكاملة.</div>
+  <div class="ref-pill"><div class="ref-l">رقم الحجز</div><div class="ref-n" id="refno">LH-000000</div><button class="ref-copy" onclick="copyRef()">📋 نسخ الرقم</button></div>
+  <div class="suc-btns"><button class="sb p" onclick="resetBk()">حجز جديد 🐾</button><button class="sb g" onclick="window.print()">🖨 طباعة</button></div>
+</div>
+
+</main>
+</div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-logo">🐾 لوفينج هومز<span>فندق الحيوانات الأليفة – هونج كونج</span></div>
+    <div class="footer-links">
+      <a href="services.html">الخدمات</a><a href="packages.html">الحزم</a>
+      <a href="gallery.html">معرض الصور</a><a href="reviews.html">آراء العملاء</a>
+      <a href="contact.html">تواصل</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2024 <strong>لوفينج هومز</strong> — جميع الحقوق محفوظة</div>
+</footer>
+
+<script src="images.js"></script>
+<script src="script.js"></script>
+<script>
+'use strict';
+const STEPS=7;
+let cur=1,pkgPrice=180,pkgName='الأساسية',nights=0,extrasTotal=0,deliverCost=0;
+const _ref='LH-'+Date.now().toString().slice(-6);
+function $(i){return document.getElementById(i);}
+
+function selPkg(el){
+  document.querySelectorAll('.pkg-card').forEach(p=>{p.classList.remove('sel');p.setAttribute('aria-checked','false');});
+  el.classList.add('sel');el.setAttribute('aria-checked','true');
+  pkgName=el.dataset.pkg;pkgPrice=+el.dataset.price;
+  document.querySelectorAll('.pp-card').forEach(p=>{const m=p.dataset.pkg===pkgName;p.classList.toggle('sel',m);p.setAttribute('aria-checked',m?'true':'false');});
+  updSum();calcN();
+}
+function selPkgF(el){
+  document.querySelectorAll('.pp-card').forEach(p=>{p.classList.remove('sel');p.setAttribute('aria-checked','false');});
+  el.classList.add('sel');el.setAttribute('aria-checked','true');
+  pkgName=el.dataset.pkg;pkgPrice=+el.dataset.price;
+  document.querySelectorAll('.pkg-card').forEach(p=>{const m=p.dataset.pkg===pkgName;p.classList.toggle('sel',m);p.setAttribute('aria-checked',m?'true':'false');});
+  updSum();calcN();
+}
+function selPet(el){
+  document.querySelectorAll('.pet-pill').forEach(p=>{p.classList.remove('on');p.setAttribute('aria-pressed','false');});
+  el.classList.add('on');el.setAttribute('aria-pressed','true');
+}
+function togEx(el){
+  el.classList.toggle('on');
+  el.setAttribute('aria-checked',el.classList.contains('on')?'true':'false');
+  extrasTotal=0;document.querySelectorAll('.ex.on').forEach(e=>extrasTotal+=+e.dataset.price);
+  updSum();
+}
+function calcN(){
+  const ci=$('b-ci').value,co=$('b-co').value;
+  deliverCost=+($('b-dl').value||0);
+  if(ci&&co&&new Date(co)>new Date(ci)){
+    nights=Math.round((new Date(co)-new Date(ci))/86400000);
+    $('nnum').textContent=nights;$('ncost').textContent=(nights*pkgPrice).toLocaleString();
+    $('nbadge').classList.add('on');
+  }else{nights=0;$('nbadge').classList.remove('on');}
+  updSum();
+}
+function updSum(){
+  const total=(nights*pkgPrice)+extrasTotal+deliverCost;
+  $('s-pkg').textContent=pkgName;$('s-pn').textContent='HKD '+pkgPrice;
+  $('s-ni').textContent=nights>0?nights+' ليالي':'—';
+  const exEls=document.querySelectorAll('.ex.on');
+  $('s-ex').textContent=exEls.length?exEls.length+' خدمات':'—';
+  $('s-dl').textContent=deliverCost?'HKD '+deliverCost:'مجاني';
+  $('s-tt').textContent=total>0?total.toLocaleString():'—';
+}
+function clrF(id){const el=$(id);if(!el)return;el.classList.remove('err');el.removeAttribute('aria-invalid');const er=$('e-'+id.replace('b-',''));if(er){er.textContent='';er.classList.remove('on');}}
+function shwF(id,msg){const el=$(id);if(!el)return;el.classList.add('err');el.setAttribute('aria-invalid','true');const er=$('e-'+id.replace('b-',''));if(er){er.textContent='⚠ '+msg;er.classList.add('on');}}
+function valid(s){
+  let ok=true;
+  if(s===1){
+    ['b-fn','b-ln','b-em','b-ph'].forEach(clrF);
+    if(!$('b-fn').value.trim()){shwF('b-fn','أدخل اسمك الأول');ok=false;}
+    if(!$('b-ln').value.trim()){shwF('b-ln','أدخل اسم العائلة');ok=false;}
+    const em=$('b-em').value.trim();if(!em||!em.includes('@')){shwF('b-em','أدخل بريد إلكتروني صحيح');ok=false;}
+    if($('b-ph').value.trim().length<6){shwF('b-ph','أدخل رقم هاتف صحيح');ok=false;}
+  }
+  if(s===2){clrF('b-pn');if(!$('b-pn').value.trim()){shwF('b-pn','أدخل اسم حيوانك');ok=false;}}
+  if(s===5){
+    ['b-ci','b-co'].forEach(clrF);
+    if(!$('b-ci').value){shwF('b-ci','اختر تاريخ الدخول');ok=false;}
+    if(!$('b-co').value||new Date($('b-co').value)<=new Date($('b-ci').value)){shwF('b-co','اختر تاريخ خروج بعد الدخول');ok=false;}
+    if(ok&&nights<1){shwF('b-co','الإقامة يجب أن تكون ليلة على الأقل');ok=false;}
+  }
+  if(s===7){if(!$('con1').checked){toast('يجب الموافقة على شروط الخدمة','w');ok=false;}}
+  return ok;
+}
+function updSteps(n){
+  for(let i=1;i<=STEPS;i++){
+    const si=$('si'+i),sl=$('sl'+i);
+    si.classList.remove('cur','done');
+    if(i<n){si.classList.add('done');if(sl)sl.classList.add('done');}
+    else if(i===n){si.classList.add('cur');if(sl)sl.classList.remove('done');}
+    else{if(sl)sl.classList.remove('done');}
+  }
+  $('prog-fill').style.width=(n/STEPS*100)+'%';
+}
+function goStep(n){$('fs'+cur).classList.remove('on');cur=n;$('fs'+n).classList.add('on');updSteps(n);$('bk-main').scrollIntoView({behavior:'smooth',block:'start'});}
+function nxt(from){
+  if(!valid(from)){toast('يرجى تصحيح الأخطاء المشار إليها','e');return;}
+  if(from===6)fillRev();
+  goStep(from+1);
+  const msgs={1:'بياناتك الشخصية ✅',2:'معلومات الحيوان ✅',3:'الحزمة تم اختيارها ✅',4:'الخدمات الإضافية ✅',5:'مواعيد الإقامة ✅',6:'تفضيلات التنبيه ✅'};
+  if(msgs[from])toast(msgs[from],'s');
+}
+function bck(from){goStep(from-1);}
+function fillRev(){
+  deliverCost=+($('b-dl').value||0);
+  extrasTotal=0;document.querySelectorAll('.ex.on').forEach(e=>extrasTotal+=+e.dataset.price);
+  const total=(nights*pkgPrice)+extrasTotal+deliverCost;
+  const pet=document.querySelector('.pet-pill.on')?.textContent||'—';
+  const exNames=[...document.querySelectorAll('.ex.on')].map(e=>e.querySelector('.ex-name').textContent).join('، ')||'لا يوجد';
+  const dlOpt=$('b-dl').options[$('b-dl').selectedIndex]?.text||'—';
+  $('r-ref').textContent='#'+_ref;
+  $('r-nm').textContent=$('b-fn').value+' '+$('b-ln').value;
+  $('r-em').textContent=$('b-em').value;$('r-ph').textContent=$('b-ph').value;
+  $('r-pt').textContent=pet+' — '+$('b-pn').value+($('b-br').value?' ('+$('b-br').value+')':'');
+  $('r-pk').textContent=pkgName+' · HKD '+pkgPrice+'/ليلة';
+  $('r-ex').textContent=exNames;$('r-ci').textContent=$('b-ci').value;$('r-co').textContent=$('b-co').value;
+  $('r-ni').textContent=nights+' ليالي';$('r-dl').textContent=dlOpt;$('r-tt').textContent='HKD '+total.toLocaleString();
+}
+function submitBk(){
+  if(!valid(7))return;
+  const btn=$('fin-btn');btn.classList.add('ld');btn.disabled=true;
+  setTimeout(()=>{
+    btn.classList.remove('ld');btn.disabled=false;
+    $('refno').textContent=_ref;
+    document.querySelectorAll('.fsec').forEach(s=>s.style.display='none');
+    document.querySelector('.prog-track').style.display='none';
+    $('steps-bar').style.display='none';
+    $('suc').style.display='block';
+    toast('🎉 تم تأكيد حجزك بنجاح!','s',6000);
+  },1800);
+}
+function copyRef(){const ref=$('refno').textContent;if(navigator.clipboard)navigator.clipboard.writeText(ref).then(()=>toast('تم نسخ رقم الحجز ✅','s'));}
+function resetBk(){
+  document.querySelectorAll('.fsec').forEach(s=>{s.style.display='';s.classList.remove('on');});
+  document.querySelector('.prog-track').style.display='';$('steps-bar').style.display='';$('suc').style.display='none';
+  $('bk-main').querySelectorAll('input:not([type=checkbox]),textarea,select').forEach(el=>el.value='');
+  $('bk-main').querySelectorAll('input[type=checkbox]').forEach(el=>{el.checked=el.id==='n1'||el.id==='n2'||el.id==='n3'||el.id==='n4';});
+  document.querySelectorAll('.ex').forEach(e=>{e.classList.remove('on');e.setAttribute('aria-checked','false');});
+  document.querySelectorAll('.pet-pill').forEach((p,i)=>{p.classList.toggle('on',i===0);p.setAttribute('aria-pressed',i===0?'true':'false');});
+  document.querySelectorAll('.pkg-card,.pp-card').forEach(p=>{const sel=p.dataset.pkg==='الأساسية';p.classList.toggle('sel',sel);p.setAttribute('aria-checked',sel?'true':'false');});
+  $('nbadge').classList.remove('on');
+  cur=1;pkgPrice=180;pkgName='الأساسية';nights=0;extrasTotal=0;deliverCost=0;
+  $('fs1').classList.add('on');updSteps(1);updSum();
+}
+function toast(msg,type='i',dur=3500){
+  const el=document.createElement('div');el.className='toast '+type;el.setAttribute('role','alert');
+  const ic={i:'ℹ️',s:'✅',e:'❌',w:'⚠️'};el.textContent=(ic[type]||'')+' '+msg;
+  $('toasts').appendChild(el);
+  setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),300);},dur);
+}
+(function(){
+  const td=new Date().toISOString().split('T')[0];
+  $('b-ci').min=td;$('b-co').min=td;
+  document.querySelectorAll('.fg input,.fg select,.fg textarea').forEach(el=>{
+    el.addEventListener('focus',()=>{const l=el.closest('.fg')?.querySelector('label');if(l)l.style.color='var(--amber)';});
+    el.addEventListener('blur',()=>{const l=el.closest('.fg')?.querySelector('label');if(l)l.style.color='';});
+    el.addEventListener('input',()=>{el.classList.remove('err');el.removeAttribute('aria-invalid');const er=$('e-'+el.id.replace('b-',''));if(er){er.textContent='';er.classList.remove('on');}});
+  });
+  updSum();
+})();
+</script>
+</body>
+</html>

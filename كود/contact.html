@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تواصل معنا — لوفينج هومز</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .contact-page {
+      min-height: 100vh;
+      background: #3D2910;
+      padding: 100px 24px 80px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .contact-page::before {
+      content: '🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾';
+      position: absolute;
+      inset: 0;
+      font-size: 40px;
+      opacity: .04;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 60px;
+      padding: 40px;
+      pointer-events: none;
+      line-height: 2;
+      letter-spacing: 40px;
+    }
+    .contact-page::after {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(201,135,58,.18) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      border-radius: 50%;
+      animation: pulse 4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      50%       { transform: translate(-50%, -50%) scale(1.15); opacity: .7; }
+    }
+    .contact-card {
+      position: relative; z-index: 2;
+      width: 100%; max-width: 580px;
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(201,135,58,.25);
+      border-radius: 28px;
+      padding: 48px 44px;
+      box-shadow:
+        0 0 0 1px rgba(201,135,58,.1),
+        0 32px 80px rgba(0,0,0,.4),
+        inset 0 1px 0 rgba(255,255,255,.08);
+      animation: cardIn .6s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(40px) scale(.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .card-header { text-align: center; margin-bottom: 36px; }
+    .card-header .paw-icon {
+      font-size: 44px; display: block; margin-bottom: 14px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+    .card-header h2 { font-size: 26px; font-weight: 900; color: white; margin-bottom: 8px; }
+    .card-header h2 em { color: var(--amber); font-style: normal; }
+    .card-header p { color: rgba(255,255,255,.45); font-size: 14px; line-height: 1.7; }
+    .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .cf-group { margin-bottom: 14px; }
+    .cf-group label {
+      display: block; font-size: 12px; font-weight: 700;
+      color: rgba(255,255,255,.55); letter-spacing: .8px;
+      text-transform: uppercase; margin-bottom: 7px;
+      transition: color .2s;
+    }
+    .cf-group input,
+    .cf-group select,
+    .cf-group textarea {
+      width: 100%; padding: 13px 16px;
+      background: rgba(255,255,255,.07);
+      border: 1.5px solid rgba(255,255,255,.12);
+      border-radius: 12px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px; color: white;
+      outline: none; direction: rtl;
+      transition: border-color .25s, background .25s, box-shadow .25s;
+      -webkit-appearance: none;
+    }
+    .cf-group input::placeholder,
+    .cf-group textarea::placeholder { color: rgba(255,255,255,.25); }
+    .cf-group select option { background: #3D2910; color: white; }
+    .cf-group input:focus,
+    .cf-group select:focus,
+    .cf-group textarea:focus {
+      border-color: var(--amber);
+      background: rgba(201,135,58,.08);
+      box-shadow: 0 0 0 3px rgba(201,135,58,.15), 0 0 20px rgba(201,135,58,.1);
+    }
+    .cf-group textarea { height: 130px; resize: none; }
+    .char-count { text-align: left; font-size: 11px; color: rgba(255,255,255,.3); margin-top: 5px; }
+    .cf-submit {
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg, #C9873A, #E8A055);
+      color: white; border: none; border-radius: 14px;
+      font-size: 16px; font-weight: 800;
+      font-family: 'Tajawal', sans-serif;
+      cursor: pointer; margin-top: 6px;
+      position: relative; overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 8px 24px rgba(201,135,58,.35);
+    }
+    .cf-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,135,58,.5); }
+    .cf-submit:active { transform: scale(.98); }
+    .cf-submit .ripple {
+      position: absolute; border-radius: 50%;
+      background: rgba(255,255,255,.3);
+      transform: scale(0);
+      animation: ripple .6s linear;
+      pointer-events: none;
+    }
+    @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+    .cf-submit.loading .btn-text { opacity: 0; }
+    .cf-submit.loading::after {
+      content: '';
+      position: absolute; inset: 0; margin: auto;
+      width: 22px; height: 22px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-top-color: white; border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .cf-group input.error,
+    .cf-group select.error,
+    .cf-group textarea.error {
+      border-color: #E87070;
+      background: rgba(232,112,112,.07);
+      animation: shake .35s ease;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-6px); }
+      75%      { transform: translateX(6px); }
+    }
+    .error-msg { font-size: 11px; color: #E87070; margin-top: 5px; display: none; }
+    .cf-group.has-error .error-msg { display: block; }
+    .success-screen {
+      display: none; text-align: center; padding: 20px 0;
+      animation: cardIn .5s ease both;
+    }
+    .success-screen .success-anim {
+      font-size: 80px; display: block; margin-bottom: 20px;
+      animation: popIn .5s cubic-bezier(.34,1.56,.64,1) both;
+      animation-delay: .1s;
+    }
+    @keyframes popIn {
+      from { transform: scale(0) rotate(-10deg); opacity: 0; }
+      to   { transform: scale(1) rotate(0); opacity: 1; }
+    }
+    .success-screen h3 { font-size: 24px; font-weight: 900; color: white; margin-bottom: 10px; }
+    .success-screen p { color: rgba(255,255,255,.5); font-size: 15px; line-height: 1.8; }
+    .back-btn {
+      display: inline-block; margin-top: 28px;
+      background: transparent;
+      border: 2px solid rgba(201,135,58,.5);
+      color: var(--amber); padding: 12px 32px;
+      border-radius: 12px; font-size: 15px; font-weight: 700;
+      font-family: 'Tajawal', sans-serif;
+      cursor: pointer; transition: all .2s;
+    }
+    .back-btn:hover { background: var(--amber); color: white; border-color: var(--amber); }
+    .particles { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+    .particle {
+      position: absolute; width: 4px; height: 4px;
+      background: var(--amber); border-radius: 50%;
+      opacity: 0; animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: .6; }
+      90%  { opacity: .3; }
+      100% { transform: translateY(-100px) scale(1); opacity: 0; }
+    }
+    @media (max-width: 600px) {
+      .contact-card { padding: 32px 22px; }
+      .cf-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html"><span class="paw">🐾</span> لوفينج هومز</a>
+  <div class="nav-links">
+    <a href="services.html">خدماتنا</a>
+    <a href="packages.html">الحزم</a>
+    <a href="gallery.html">معرض الصور</a>
+    <a href="reviews.html">آراء العملاء</a>
+    <a href="contact.html">تواصل</a>
+       <a href="founder.html">من نحن</a>
+
+  </div>
+  <a href="booking.html" class="nav-btn">احجز الآن</a>
+</nav>
+
+<div class="contact-page">
+  <div class="particles" id="particles"></div>
+  <div class="contact-card">
+
+    <div id="formContent">
+      <div class="card-header">
+        <span class="paw-icon">🐾</span>
+        <h2>تواصل <em>معنا</em></h2>
+        <p>هل عندك سؤال؟ نحن هنا للمساعدة</p>
+      </div>
+
+      <div class="cf-row">
+        <div class="cf-group" id="grp-name">
+          <label>الاسم الكامل</label>
+          <input type="text" id="fname" placeholder="أحمد محمد">
+          <div class="error-msg">يرجى إدخال اسمك</div>
+        </div>
+        <div class="cf-group" id="grp-phone">
+          <label>رقم الهاتف</label>
+          <input type="tel" id="fphone" placeholder="+852 xxxx xxxx">
+          <div class="error-msg">يرجى إدخال رقمك</div>
+        </div>
+      </div>
+
+      <div class="cf-group" id="grp-email">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="femail" placeholder="example@email.com">
+        <div class="error-msg">يرجى إدخال إيميل صحيح</div>
+      </div>
+
+      <div class="cf-group">
+        <label>الموضوع</label>
+        <select id="fsubject">
+          <option value="">اختر الموضوع</option>
+          <option>استفسار عن الخدمات</option>
+          <option>استفسار عن الأسعار</option>
+          <option>حجز موعد</option>
+          <option>شكوى أو اقتراح</option>
+          <option>أخرى</option>
+        </select>
+      </div>
+
+      <div class="cf-group" id="grp-msg">
+        <label>رسالتك</label>
+        <textarea id="fmsg" placeholder="اكتب رسالتك هنا..." oninput="countChars()"></textarea>
+        <div class="char-count"><span id="charCount">0</span> / 500</div>
+        <div class="error-msg">يرجى كتابة رسالتك</div>
+      </div>
+
+      <button class="cf-submit" id="submitBtn" onclick="submitForm(event)">
+        <span class="btn-text">📨 إرسال الرسالة</span>
+      </button>
+    </div>
+
+    <div class="success-screen" id="successScreen">
+      <span class="success-anim">✅</span>
+      <h3>تم إرسال رسالتك!</h3>
+      <p>شكراً لتواصلك معنا 🐾<br>سنرد عليك في أقرب وقت ممكن.</p>
+      <button class="back-btn" onclick="resetForm()">↩ إرسال رسالة أخرى</button>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-logo">🐾 لوفينج هومز<span>فندق الحيوانات الأليفة – هونج كونج</span></div>
+    <div class="footer-links">
+      <a href="services.html">الخدمات</a>
+      <a href="packages.html">الحزم</a>
+      <a href="gallery.html">معرض الصور</a>
+      <a href="reviews.html">آراء العملاء</a>
+      <a href="contact.html">تواصل</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2024 <strong>لوفينج هومز</strong> — جميع الحقوق محفوظة</div>
+</footer>
+
+<script src="images.js"></script>
+<script src="script.js"></script>
+<script>
+  // PARTICLES
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      left: ${Math.random() * 100}%;
+      width: ${2 + Math.random() * 4}px;
+      height: ${2 + Math.random() * 4}px;
+      animation-duration: ${6 + Math.random() * 10}s;
+      animation-delay: ${Math.random() * 8}s;
+    `;
+    container.appendChild(p);
+  }
+
+  // CHAR COUNTER
+  function countChars() {
+    const len = document.getElementById('fmsg').value.length;
+    document.getElementById('charCount').textContent = len;
+    if (len > 500) document.getElementById('fmsg').value = document.getElementById('fmsg').value.slice(0, 500);
+  }
+
+  // RIPPLE
+  document.getElementById('submitBtn').addEventListener('click', function(e) {
+    const btn = this;
+    const circle = document.createElement('span');
+    const diameter = Math.max(btn.clientWidth, btn.clientHeight);
+    circle.style.cssText = `width:${diameter}px;height:${diameter}px;left:${e.clientX - btn.getBoundingClientRect().left - diameter/2}px;top:${e.clientY - btn.getBoundingClientRect().top - diameter/2}px`;
+    circle.className = 'ripple';
+    btn.querySelector('.ripple')?.remove();
+    btn.appendChild(circle);
+  });
+
+  // VALIDATE
+  function validate() {
+    let ok = true;
+    const name  = document.getElementById('fname');
+    const email = document.getElementById('femail');
+    const msg   = document.getElementById('fmsg');
+    [name, email, msg].forEach(el => {
+      el.classList.remove('error');
+      el.closest('.cf-group').classList.remove('has-error');
+    });
+    if (!name.value.trim()) {
+      name.classList.add('error');
+      name.closest('.cf-group').classList.add('has-error');
+      ok = false;
+    }
+    if (!email.value.trim() || !email.value.includes('@')) {
+      email.classList.add('error');
+      email.closest('.cf-group').classList.add('has-error');
+      ok = false;
+    }
+    if (!msg.value.trim()) {
+      msg.classList.add('error');
+      msg.closest('.cf-group').classList.add('has-error');
+      ok = false;
+    }
+    return ok;
+  }
+
+  // SUBMIT
+  function submitForm(e) {
+    e.preventDefault();
+    if (!validate()) return;
+    const btn = document.getElementById('submitBtn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+    }, 1500);
+  }
+
+  // RESET
+  function resetForm() {
+    document.getElementById('formContent').style.display = 'block';
+    document.getElementById('successScreen').style.display = 'none';
+    document.querySelectorAll('.contact-card input, .contact-card textarea, .contact-card select')
+      .forEach(el => el.value = '');
+    document.getElementById('charCount').textContent = '0';
+  }
+
+  // FOCUS EFFECTS
+  document.querySelectorAll('.cf-group input, .cf-group select, .cf-group textarea').forEach(el => {
+    el.addEventListener('focus', () => {
+      el.closest('.cf-group').querySelector('label').style.color = '#C9873A';
+    });
+    el.addEventListener('blur', () => {
+      el.closest('.cf-group').querySelector('label').style.color = '';
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>معرض الصور — لوفينج هومز</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <span class="paw">🐾</span>
+    لوفينج هومز
+  </a>
+  <div class="nav-links">
+    <a href="services.html">خدماتنا</a>
+    <a href="packages.html">الحزم</a>
+    <a href="gallery.html">معرض الصور</a>
+      <a href="reviews.html">آراء العملاء</a>
+    <a href="contact.html">تواصل</a>
+         <a href="founder.html">من نحن</a>
+
+  </div>
+  <a href="contact.html" class="nav-btn">احجز الآن</a>
+</nav>
+
+<!-- GALLERY -->
+<section id="gallery" class="gallery-section">
+  <div class="sec-head">
+    <span class="sec-eyebrow">معرض الصور</span>
+    <h2 class="sec-title">GALLERY</h2>
+    <p class="sec-sub">شاهد كيف يقضي حيوانك وقته معنا</p>
+  </div>
+
+  <!-- Row 1: 3 images -->
+  <div class="gallery-row">
+    <div class="gal-item side" onclick="openLb(0)">
+      <img data-src="lbImgs[0]" alt="صورة 1">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+    <div class="gal-item center" onclick="openLb(1)">
+      <img data-src="lbImgs[1]" alt="صورة 2">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+    <div class="gal-item side" onclick="openLb(2)">
+      <img data-src="lbImgs[2]" alt="صورة 3">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+  </div>
+
+  <!-- Row 2: 4 images -->
+  <div class="gallery-row2">
+    <div class="gal-item equal" onclick="openLb(3)">
+      <img data-src="lbImgs[3]" alt="صورة 4">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+    <div class="gal-item equal" onclick="openLb(4)">
+      <img data-src="lbImgs[4]" alt="صورة 5">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+    <div class="gal-item equal" onclick="openLb(5)">
+      <img data-src="lbImgs[5]" alt="صورة 6">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+    <div class="gal-item equal" onclick="openLb(6)">
+      <img data-src="lbImgs[6]" alt="صورة 7">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+  </div>
+
+  <!-- Row 3: 4 images -->
+  <div class="gallery-row2">
+    <div class="gal-item equal" onclick="openLb(7)">
+      <img data-src="lbImgs[7]" alt="صورة 8">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+    <div class="gal-item equal" onclick="openLb(8)">
+      <img data-src="lbImgs[8]" alt="صورة 9">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+    <div class="gal-item equal" onclick="openLb(9)">
+      <img data-src="lbImgs[9]" alt="صورة 10">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+    <div class="gal-item equal" onclick="openLb(10)">
+      <img data-src="lbImgs[10]" alt="صورة 11">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+  </div>
+
+  <!-- Row 4: 2 wide images -->
+  <div class="gallery-row3">
+    <div class="gal-item wide" onclick="openLb(11)">
+      <img data-src="lbImgs[11]" alt="صورة 12">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+    <div class="gal-item wide" onclick="openLb(12)">
+      <img data-src="lbImgs[12]" alt="صورة 13">
+      <div class="gal-zoom"><span>🔍</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLbOutside(event)">
+  <button class="lb-prev" onclick="shiftLb(-1)">&#8249;</button>
+  <div class="lightbox-inner">
+    <button class="lb-close" onclick="closeLb()">✕</button>
+    <img id="lb-img" src="" alt="">
+    <div id="lb-counter"></div>
+  </div>
+  <button class="lb-next" onclick="shiftLb(1)">&#8250;</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-logo">
+      🐾 لوفينج هومز
+      <span>فندق الحيوانات الأليفة – هونج كونج</span>
+    </div>
+    <div class="footer-links">
+      <a href="services.html">الخدمات</a>
+      <a href="packages.html">الحزم</a>
+      <a href="gallery.html">معرض الصور</a>
+        <a href="reviews.html">آراء العملاء</a>
+      <a href="contact.html">تواصل</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2024 <strong>لوفينج هومز</strong> — جميع الحقوق محفوظة
+  </div>
+</footer>
+
+<script src="images.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

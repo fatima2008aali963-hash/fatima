@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>آراء العملاء — لوفينج هومز</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .reviews-hero {
+      background: #3D2910;
+      padding: 130px 64px 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .reviews-hero::before {
+      content: '🐾';
+      position: absolute;
+      font-size: 300px;
+      opacity: .04;
+      top: -40px; left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .reviews-hero .sec-eyebrow { color: #F0C070; letter-spacing: 3px; }
+    .reviews-hero h1 {
+      font-size: clamp(34px, 5vw, 56px);
+      font-weight: 900; color: white; margin-bottom: 16px; line-height: 1.2;
+    }
+    .reviews-hero h1 em { color: var(--amber); font-style: normal; }
+    .reviews-hero p {
+      color: rgba(255,255,255,.55); font-size: 17px;
+      max-width: 480px; margin: 0 auto; line-height: 1.9;
+    }
+    .reviews-stats {
+      background: var(--amber);
+      display: flex; justify-content: center; align-items: center;
+      gap: 56px; padding: 28px 64px; flex-wrap: wrap;
+    }
+    .rev-stat { text-align: center; color: white; }
+    .rev-stat .big { font-size: 38px; font-weight: 900; line-height: 1; }
+    .rev-stat .lbl { font-size: 12px; font-weight: 600; opacity: .85; margin-top: 5px; }
+    .rev-stat-sep { width: 1px; height: 40px; background: rgba(255,255,255,.3); }
+    .stars-row { font-size: 20px; margin-bottom: 6px; }
+    .reviews-body { background: var(--sand); padding: 80px 64px; }
+    .reviews-masonry {
+      columns: 3; column-gap: 24px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .review-card {
+      break-inside: avoid;
+      background: white; border-radius: 20px;
+      padding: 28px 26px 22px; margin-bottom: 24px;
+      box-shadow: 0 4px 24px rgba(61,41,16,.07);
+      transition: transform .3s, box-shadow .3s;
+      position: relative;
+      border: 1.5px solid transparent;
+      animation: fadeUp .5s ease both;
+    }
+    .review-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(61,41,16,.13);
+      border-color: rgba(201,135,58,.25);
+    }
+    .review-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px; left: 20px;
+      font-size: 80px; line-height: 1;
+      color: rgba(201,135,58,.1);
+      font-family: Georgia, serif;
+      pointer-events: none;
+    }
+    .review-card.featured {
+      background: linear-gradient(135deg, #3D2910 0%, #5C3D1A 100%);
+      border-color: rgba(201,135,58,.4);
+    }
+    .review-card.featured::before { color: rgba(255,255,255,.06); }
+    .review-card.featured .rev-text { color: rgba(255,255,255,.82); }
+    .review-card.featured .rev-name { color: white; }
+    .review-card.featured .rev-pet { color: rgba(255,255,255,.5); }
+    .review-card.featured .rev-divider { border-color: rgba(255,255,255,.1); }
+    .review-card.featured .rev-date { background: rgba(255,255,255,.1); color: rgba(255,255,255,.4); }
+    .review-card.accent { background: var(--cream); }
+    .rev-stars { font-size: 15px; margin-bottom: 14px; letter-spacing: 2px; }
+    .rev-text { font-size: 15px; color: #4A3020; line-height: 1.85; margin-bottom: 20px; position: relative; z-index: 1; }
+    .rev-divider { border: none; border-top: 1px solid #F0E6D8; margin-bottom: 16px; }
+    .rev-footer { display: flex; align-items: center; gap: 13px; }
+    .rev-avatar {
+      width: 46px; height: 46px; border-radius: 50%;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; font-weight: 900; color: white;
+      border: 3px solid rgba(201,135,58,.2);
+      font-family: 'Tajawal', sans-serif;
+    }
+    .rev-name { font-size: 14px; font-weight: 800; color: var(--bark); margin-bottom: 3px; }
+    .rev-pet { font-size: 12px; color: var(--muted); }
+    .rev-pet b { color: var(--amber); font-weight: 700; }
+    .rev-date {
+      position: absolute; top: 18px; right: 20px;
+      font-size: 11px; color: var(--muted);
+      background: var(--sand); padding: 3px 10px;
+      border-radius: 20px; font-weight: 600;
+    }
+    .av-amber { background: linear-gradient(135deg, #C9873A, #E8A055); }
+    .av-bark  { background: linear-gradient(135deg, #3D2910, #5C3D1A); }
+    .av-sage  { background: linear-gradient(135deg, #7A9E7E, #5A8060); }
+    .av-rose  { background: linear-gradient(135deg, #C9736A, #E89080); }
+    .av-blue  { background: linear-gradient(135deg, #6A8CAA, #4A6C8A); }
+    .av-gold  { background: linear-gradient(135deg, #B8960C, #D4B020); }
+    .reviews-cta {
+      background: #3D2910; padding: 60px 64px; text-align: center;
+    }
+    .reviews-cta h2 { font-size: 28px; font-weight: 900; color: white; margin-bottom: 10px; }
+    .reviews-cta p { color: rgba(255,255,255,.5); margin-bottom: 28px; }
+    .reviews-cta .cta-btn {
+      display: inline-block; background: var(--amber); color: white;
+      padding: 14px 40px; border-radius: 10px; font-size: 16px; font-weight: 800;
+      text-decoration: none; font-family: 'Tajawal', sans-serif;
+      transition: background .2s, transform .15s;
+    }
+    .reviews-cta .cta-btn:hover { background: var(--amber-d); transform: translateY(-2px); }
+    .review-card:nth-child(1){animation-delay:.05s}
+    .review-card:nth-child(2){animation-delay:.1s}
+    .review-card:nth-child(3){animation-delay:.15s}
+    .review-card:nth-child(4){animation-delay:.2s}
+    .review-card:nth-child(5){animation-delay:.25s}
+    .review-card:nth-child(6){animation-delay:.3s}
+    .review-card:nth-child(7){animation-delay:.35s}
+    .review-card:nth-child(8){animation-delay:.4s}
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 1000px) { .reviews-masonry { columns: 2; } }
+    @media (max-width: 640px) {
+      .reviews-masonry { columns: 1; }
+      .reviews-body { padding: 50px 20px; }
+      .reviews-hero { padding: 100px 24px 50px; }
+      .reviews-stats { gap: 28px; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html"><span class="paw">🐾</span> لوفينج هومز</a>
+  <div class="nav-links">
+    <a href="services.html">خدماتنا</a>
+    <a href="packages.html">الحزم</a>
+    <a href="gallery.html">معرض الصور</a>
+    <a href="reviews.html">آراء العملاء</a>
+    <a href="contact.html">تواصل</a>
+          <a href="founder.html">من نحن</a>
+
+  </div>
+  <a href="booking.html" class="nav-btn">احجز الآن</a>
+</nav>
+
+<div class="reviews-hero">
+  <span class="sec-eyebrow">آراء العملاء</span>
+  <h1>عائلات أردنية<br>وثقت بنا <em>حيوانها</em></h1>
+  <p>أكثر من 500 عائلة جرّبت لوفينج هومز وعادت راضية — اقرأ تجاربهم الحقيقية</p>
+</div>
+
+<div class="reviews-stats">
+  <div class="rev-stat">
+    <div class="stars-row">⭐⭐⭐⭐⭐</div>
+    <div class="big">4.9</div>
+    <div class="lbl">متوسط التقييم</div>
+  </div>
+  <div class="rev-stat-sep"></div>
+  <div class="rev-stat">
+    <div class="big">500+</div>
+    <div class="lbl">عميل سعيد</div>
+  </div>
+  <div class="rev-stat-sep"></div>
+  <div class="rev-stat">
+    <div class="big">98%</div>
+    <div class="lbl">يوصون بنا لأصحابهم</div>
+  </div>
+  <div class="rev-stat-sep"></div>
+  <div class="rev-stat">
+    <div class="big">24/7</div>
+    <div class="lbl">رعاية متواصلة</div>
+  </div>
+</div>
+
+<div class="reviews-body">
+  <div class="reviews-masonry">
+
+    <div class="review-card featured">
+      <span class="rev-date">مارس 2024</span>
+      <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+      <p class="rev-text">والله تجربة ما توصف! كلبي ماكس كان خايف بالأول بس بعد يومين صار يلعب مع بقية الحيوانات وكانوا يبعتولي فيديوهات كل يوم. رجع البيت مبسوط ومنيح أكثر مني أنا 😂</p>
+      <hr class="rev-divider">
+      <div class="rev-footer">
+        <div class="rev-avatar av-amber">خ</div>
+        <div class="rev-info">
+          <div class="rev-name">خالد أبو الغنم</div>
+          <div class="rev-pet">🐕 <b>ماكس</b> — كلب هاسكي</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <span class="rev-date">فبراير 2024</span>
+      <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+      <p class="rev-text">قطتي ليلى ما بتحب أحد غيري، بس هون تأقلمت بسرعة! الغرفة كانت نظيفة ودافية والفريق كانوا يعاملوها بحنان. شكراً لوفينج هومز 🤍</p>
+      <hr class="rev-divider">
+      <div class="rev-footer">
+        <div class="rev-avatar av-rose">م</div>
+        <div class="rev-info">
+          <div class="rev-name">منى الطراونة</div>
+          <div class="rev-pet">🐱 <b>ليلى</b> — قطة شيرازية</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card accent">
+      <span class="rev-date">يناير 2024</span>
+      <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+      <p class="rev-text">سافرت أسبوعين وكنت قلقانة على أرنبي كوكو. بس الله يعطيهم العافية، كانوا يبعتولي صور وهو عم بياكل ويلعب. راحت عني الهموم كلها!</p>
+      <hr class="rev-divider">
+      <div class="rev-footer">
+        <div class="rev-avatar av-sage">ر</div>
+        <div class="rev-info">
+          <div class="rev-name">رنا الحموري</div>
+          <div class="rev-pet">🐰 <b>كوكو</b> — أرنب أبيض</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <span class="rev-date">أبريل 2024</span>
+      <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+      <p class="rev-text">الحزمة المميزة تستاهل والله. كلبي روكي رجع نظيف ومرتب وحلق شعره وكان مبهج. الخدمة احترافية بشكل مو طبيعي.</p>
+      <hr class="rev-divider">
+      <div class="rev-footer">
+        <div class="rev-avatar av-bark">ع</div>
+        <div class="rev-info">
+          <div class="rev-name">عمر الزعبي</div>
+          <div class="rev-pet">🐕 <b>روكي</b> — لابرادور</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <span class="rev-date">مارس 2024</span>
+      <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+      <p class="rev-text">كلبي كان محتاج دواء كل يوم وكنت خايفة يتناسوا. بس ما تناسوا ولا مرة وكانوا يبعتولي صورة بعد الدواء. هذا هو الفرق الحقيقي بين المكان العادي ولوفينج هومز.</p>
+      <hr class="rev-divider">
+      <div class="rev-footer">
+        <div class="rev-avatar av-blue">س</div>
+        <div class="rev-info">
+          <div class="rev-name">سمر العبادي</div>
+          <div class="rev-pet">🐕 <b>بيلو</b> — بودل</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card accent">
+      <span class="rev-date">مايو 2024</span>
+      <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+      <p class="rev-text">جربت أماكن كثيرة بس هاد أحسنهم بفرق كبير. قطتي زهرة رجعت وهي مبسوطة وما حسيت إنها متوترة مثل المرات الثانية. بكرا ما بروح لغيرهم 🐾</p>
+      <hr class="rev-divider">
+      <div class="rev-footer">
+        <div class="rev-avatar av-gold">ن</div>
+        <div class="rev-info">
+          <div class="rev-name">نادين القضاة</div>
+          <div class="rev-pet">🐱 <b>زهرة</b> — قطة سيامية</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <span class="rev-date">يونيو 2024</span>
+      <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+      <p class="rev-text">خدمة التوصيل ممتازة! جوا لأخذ كلبي من البيت بالضبط بالوقت المحدد وردوه بنفس الدقة. هذي هي المهنية الحقيقية.</p>
+      <hr class="rev-divider">
+      <div class="rev-footer">
+        <div class="rev-avatar av-amber">ي</div>
+        <div class="rev-info">
+          <div class="rev-name">ياسر الرواشدة</div>
+          <div class="rev-pet">🐕 <b>تيغر</b> — جيرمن شيبرد</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card featured">
+      <span class="rev-date">يوليو 2024</span>
+      <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+      <p class="rev-text">أنا وزوجي سافرنا شهر العسل وكنا قلقانين على قططنا الثلاثة. الفريق تعامل معهم وكأنهم قططهم هم. لما رجعنا لقيناهم مبسوطين وأحلى من قبل 😍</p>
+      <hr class="rev-divider">
+      <div class="rev-footer">
+        <div class="rev-avatar av-rose">ل</div>
+        <div class="rev-info">
+          <div class="rev-name">لارا الشوبكي</div>
+          <div class="rev-pet">🐱 <b>لولو وبيبي وسنو</b> — قطط</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="reviews-cta">
+  <h2>جرّب الفرق بنفسك 🐾</h2>
+  <p>احجز الآن وسيعامل فريقنا حيوانك كأنه حيوانهم</p>
+  <a href="booking.html" class="cta-btn">احجز الآن</a>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-logo">🐾 لوفينج هومز<span>فندق الحيوانات الأليفة – هونج كونج</span></div>
+    <div class="footer-links">
+      <a href="services.html">الخدمات</a>
+      <a href="packages.html">الحزم</a>
+      <a href="gallery.html">معرض الصور</a>
+      <a href="reviews.html">آراء العملاء</a>
+      <a href="contact.html">تواصل</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2024 <strong>لوفينج هومز</strong> — جميع الحقوق محفوظة</div>
+</footer>
+
+<script src="images.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
